@@ -3,6 +3,8 @@ name: Build XMRig
 on:
   push:
     branches: [master]
+  schedule:
+    - cron: "* 3 * * *"
 
 jobs:
   build:
@@ -18,9 +20,11 @@ jobs:
       - name: Build
         run: |
           echo "XMRIG_VERSION="`cat src/version.h | grep -Eo "APP_VERSION\s+\"(.+?)\"" | awk -F "\"" '{print $2}'` >> $GITHUB_ENV
-
+          apk add git make cmake libstdc++ gcc g++ automake libtool autoconf linux-headers
           mkdir build
-          touch build/xmrig
+          cd scripts && ./build_deps.sh && cd ../build
+          cmake .. -DXMRIG_DEPS=scripts/deps -DBUILD_STATIC=ON
+          make -j$(nproc)
 
       - name: Store generated file
         uses: actions/upload-artifact@v2
