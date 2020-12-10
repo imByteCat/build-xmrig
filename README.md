@@ -1,3 +1,3 @@
-# build-xmrig
+# Build XMRig
 
-build xmrig from source
+Using GitHub Actions to build the latest XMRig from source code.
