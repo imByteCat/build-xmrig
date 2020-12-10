@@ -6,8 +6,8 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-20.04
-    container: alpine:3.12.1
+    runs-on: ubuntu-latest
+    container: alpine:latest
 
     steps:
       - name: Checkout Repository master branch
@@ -17,13 +17,13 @@ jobs:
 
       - name: Build
         run: |
-          echo "XMRIG_VERSION="`cat version.h | grep -Eo "APP_VERSION\s+\"(.+?)\"" | awk -F "\"" '{print $2}'` >> $GITHUB_ENV
-          apk add git make cmake libstdc++ gcc g++ automake libtool autoconf linux-headers
           mkdir build
           touch build/xmrig
 
       - name: Store generated file
         uses: actions/upload-artifact@v2
+        env: 
+          XMRIG_VERSION: $(cat version.h | grep -Eo "APP_VERSION\s+\"(.+?)\"" | awk -F "\"" '{print $2}')
         with:
-          name: xmrig-$XMRIG_VERSION
+          name: xmrig-${{env.XMRIG_VERSION}}
           path: build/xmrig
