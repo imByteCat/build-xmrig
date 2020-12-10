@@ -17,6 +17,8 @@ jobs:
 
       - name: Build
         run: |
+          echo "XMRIG_VERSION="`cat version.h | grep -Eo "APP_VERSION\s+\"(.+?)\"" | awk -F "\"" '{print $2}'` >> $GITHUB_ENV
+          apk add git make cmake libstdc++ gcc g++ automake libtool autoconf linux-headers
           mkdir build
           touch build/xmrig
 
@@ -25,5 +27,5 @@ jobs:
         env:
           XMRIG_VERSION: $(cat src/version.h | grep -Eo "APP_VERSION\s+\"(.+?)\"" | awk -F "\"" '{print $2}')
         with:
-          name: xmrig-${{ env.XMRIG_VERSION }}
+          name: xmrig-${{env.XMRIG_VERSION}}
           path: build/xmrig
