@@ -17,8 +17,9 @@ jobs:
 
       - name: Build
         run: |
+          mkdir build
           touch build/xmrig
-          echo "::set-env name=XMRIG_VERSION::$(cat version.c | grep -Eo "APP_VERSION\s+\"(.+?)\"" | awk -F "\"" '{print $2}')"
+          echo "::set-env name=XMRIG_VERSION::$(cat src/version.h | grep -Eo "APP_VERSION\s+\"(.+?)\"" | awk -F "\"" '{print $2}')"
 
       - name: Store generated file
         uses: actions/upload-artifact@v2
