@@ -25,5 +25,5 @@ jobs:
       - name: Store generated file
         uses: actions/upload-artifact@v2
         with:
-          name: xmrig-${env.XMRIG_VERSION}
+          name: xmrig-$XMRIG_VERSION
           path: build/xmrig
