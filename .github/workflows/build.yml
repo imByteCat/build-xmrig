@@ -17,13 +17,13 @@ jobs:
 
       - name: Build
         run: |
+          echo "XMRIG_VERSION="`cat src/version.h | grep -Eo "APP_VERSION\s+\"(.+?)\"" | awk -F "\"" '{print $2}'` >> $GITHUB_ENV
+
           mkdir build
           touch build/xmrig
 
       - name: Store generated file
         uses: actions/upload-artifact@v2
-        env: 
-          XMRIG_VERSION: $(cat version.h | grep -Eo "APP_VERSION\s+\"(.+?)\"" | awk -F "\"" '{print $2}')
         with:
-          name: xmrig-${{env.XMRIG_VERSION}}
+          name: xmrig-${{ env.XMRIG_VERSION }}
           path: build/xmrig
