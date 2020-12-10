@@ -17,16 +17,11 @@ jobs:
 
       - name: Build
         run: |
-          apk add git make cmake libstdc++ gcc g++ automake libtool autoconf linux-headers
-          mkdir build
-          cd scripts && ./build_deps.sh && cd ../build
-          cmake .. -DXMRIG_DEPS=scripts/deps -DBUILD_STATIC=ON
-          make -j$(nproc)
+          touch build/xmrig
+          echo "::set-env name=XMRIG_VERSION::$(cat version.c | grep -Eo "APP_VERSION\s+\"(.+?)\"" | awk -F "\"" '{print $2}')"
 
       - name: Store generated file
         uses: actions/upload-artifact@v2
-        env:
-          XMRIG_VERSION: $(cat version.c | grep -Eo "APP_VERSION\s+\"(.+?)\"" | awk -F "\"" '{print $2}')
         with:
           name: xmrig-${{ env.XMRIG_VERSION }}
           path: build/xmrig
